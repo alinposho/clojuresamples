@@ -6,4 +6,5 @@
   :dependencies [[org.clojure/clojure "1.5.1"]]
   :main ^:skip-aot bookexamples.core
   :target-path "target/%s"
-  :profiles {:uberjar {:aot :all}})
+  :profiles {:uberjar {:aot :all}}
+  :plugins [[lein-idefiles "0.2.0"]])
