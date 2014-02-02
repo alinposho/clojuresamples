@@ -39,6 +39,39 @@
 
 (def visitors (atom #{}))
 
+@visitors ; should print #{}
+
+(swap! visitors conj "Stu")
+
+(deref visitors)
+@visitors ;; shorthand for deref
+
+;; refefining hello
+(defn hello 
+  "Writes hello message to *out*. Calls you by username. Knows if you have been here before."
+  [username]
+  (swap! visitors conj username)
+  (str "Hello, " username))
+
+(hello "Stu")
+(hello "Alin")
+
+@visitors
+
+
+(require 'clojure.java.io)
+
+;; You will now be able to refer to functions defined in this namespace without 
+;; needing to fully qualify their names. Similar to how imports work in Java.
+(refer 'bookexamples.programmingclojure.getting.started.examples)
+
+;; use combines require and refer in one operation
+(use 'bookexamples.programmingclojure.getting.started.examples)
+
+;; Calling doc prints the documentation for the parameter function on the REPL
+(doc str)
+
+
 
 
 
