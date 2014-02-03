@@ -28,7 +28,7 @@
 (clojure-source? (new File ".svn" ))
 (clojure-source? (new File "sfs.clj" ))
 (clojure-source? (new File "clj.svn" ))
-
+;; My version of the clojure-loc
 (defn clojure-loc
   "Function that counts the lines of Clojure code in a directory tree."
   [file-base]
@@ -37,15 +37,20 @@
             #(with-open [rdr (reader %)]
                (count 
                  (filter non-blank? (line-seq rdr))))
-            (file-seq (File. file-base))
-           )
+            (filter (and non-svn? clojure-source?) (file-seq (File. file-base))))
    )
   )
-
+  
 (clojure-loc ".")
   
-  
-  
+;; Stuart's version of the clojure-loc function
+(defn clojure-loc [base-file] 
+  (reduce +
+          (for [file (file-seq base-file)
+                :when (and (clojure-source? file) (non-svn? file))] 
+            (with-open [rdr (reader file)]
+              (count (filter non-blank? (line-seq rdr)))))))
+(clojure-loc (new File "."))  
   
   
   
