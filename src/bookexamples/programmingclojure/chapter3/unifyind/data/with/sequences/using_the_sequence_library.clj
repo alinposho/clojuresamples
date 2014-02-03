@@ -43,7 +43,15 @@
 (use '[clojure.string :only (join)])
 (join \, '("apple" "banana" "pair"))
 
+(take 10 (filter even? whole-numbers))
 
+(take-while (complement #{\a\e\i\o\u}) "the-quick-brown-fox")
+(drop-while (complement #{\a\e\i\o\u}) "the-quick-brown-fox")
+
+(split-at 5 (range 10))
+(split-with #(<= % 10) (range 0 20 2))
+
+(map #(format "<p>%s</p>" %) ["the" "quick" "brown" "fox"])
 
 
 
