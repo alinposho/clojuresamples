@@ -47,8 +47,8 @@
 (recur-fibo 10)
 (recur-fibo 100)
 ;; This will not case a SOE as it did for the tail-fibo
-(recur-fibo 1000000)
-(recur-fibo 10000000)
+;(recur-fibo 1000000)
+;(recur-fibo 10000000)
 
 ;; Lazy sequence fibo
 (defn lazy-seq-fibo 
@@ -63,6 +63,7 @@
 (last (take 100 (lazy-seq-fibo)))
 (nth (lazy-seq-fibo) 100)
 (nth (lazy-seq-fibo) 10)
+;(rem (nth (lazy-seq-fibo) 1000000) 1000)
 
 
 ;; An even shorter version of fibo
@@ -73,6 +74,9 @@
 (nth (fibo) 1)
 (nth (fibo) 10)
 (nth (fibo) 100)
+;; Don't be stupid and call this since it will not stop if you evaluate the function
+;(fibo)
+
 
 ;; This will return immediately, without calculating all those fibonacci numbers
 (def lots-of-fibs (take 100000000 (fibo)))
