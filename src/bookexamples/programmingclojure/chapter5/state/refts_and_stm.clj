@@ -51,9 +51,47 @@ msg
 (add-message (Message. "Alin" "Hello Again"))
 
 ;; Use commute when you do not care about the order in which the updates are applyed to the ref
-(defn add-message-commute [msg, messages]
+(defn add-message-commute [msg]
   (dosync (commute messages conj msg)))
-(add-message-commute (Message. "Alin" "Hello") messages)
+(add-message-commute (Message. "Alin" "Hello"))
+
+(def continueLatch (CountDownLatch. 1))
+
+;; This function will block until the latch is released
+(defn add-message-commute-with-latch [msg latch]
+  (future 
+    (dosync 
+      (commute messages 
+               (fn [list msg]
+                 (do 
+                   (.await latch)
+                   (conj list msg)))
+               msg))))
+  
+(def f (add-message-commute-with-latch (Message. "Latch" "First Message") continueLatch))
+;; Messages value will not be altered, since the future did not complete, considering that the latch is not released
+@messages
+
+(defn test-commute [] 
+  (do
+    (def messages (ref ()))
+    (def continueLatch (CountDownLatch. 1))
+    (def f (add-message-commute-with-latch (Message. "Latch" "First Message") continueLatch))
+    (java.lang.Thread/sleep 100)
+    (println "Messages after the latch guarded commute add: \n" @messages)
+    (add-message-commute (Message. "NonBlocking" "Second Message"))
+    (java.lang.Thread/sleep 100)
+    (println "Messages after the non blocking commute add: \n" @messages)
+    (.countDown continueLatch)
+    (java.lang.Thread/sleep 100)
+    (println "Messages after the latch has been released: \n" @messages)
+    )
+  )
+(test-commute)
+
+(.countDown continueLatch)
+
+(defn update-on-separate-thread)
 
 
 ;; Adding validation to refs
