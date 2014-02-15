@@ -70,7 +70,7 @@
 (create-snake)
 
 ;; Read the explanation in the book in order to gain a better understanding of this function
-;; Basically the first line decomposes the snake mape, and binds only the
+;; Basically the first line decomposes the snake map, and binds only the body and direction to the body and dir identifiers
 (defn move [{:keys [body dir] :as snake} & grow]
   (assoc snake :body (cons (add-points (first body) dir)
                            (if grow body (butlast body)))))
@@ -136,6 +136,22 @@
 @snake
 @apple
 
+(defn update-direction [snake newdir]
+  (when newdir (dosync (alter snake turn newdir))))
+
+(update-direction snake (dirs VK_UP))
+
+(defn update-position [snake apple]
+  "If the snake eats the apple the snake grows, otherwise, the snake simply moves"
+    (if (eats? @snake @apple) 
+      (dosync 
+        (alter snake move :grow)
+        (ref-set apple (create-apple)))
+      (dosync (alter snake move))))
+
+(update-position snake apple)
+@snake
+@apple
 
 
 
