@@ -1,5 +1,4 @@
-(ns bookexamples.programmingclojure.chapter5.state.snake
-  (:use (bookexamples.programmingclojure.chapter5.state.snake )))
+(ns bookexamples.programmingclojure.chapter5.state.snake)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Now for the mutable STP part of the snake program
@@ -22,7 +21,7 @@
 
 (update-direction snake (dirs VK_UP))
 
-(defn update-position [snake apple]
+(defn update-positions [snake apple]
   "If the snake eats the apple the snake grows, otherwise, the snake simply moves"
   (dosync 
     (if (eats? @snake @apple) 
@@ -31,6 +30,6 @@
         (ref-set apple (create-apple)))
       (alter snake move))))
 
-(update-position snake apple)
+(update-positions snake apple)
 @snake
 @apple

@@ -1,8 +1,7 @@
 (ns bookexamples.programmingclojure.chapter5.state.snake
   (:import (java.awt Color Dimension)
            (javax.swing JPanel JFrame Timer JOptionPane)
-           (java.awt.event ActionListener KeyListener KeyEvent))
-  (:require clojure.contrib.import-static))
+           (java.awt.event ActionListener KeyListener KeyEvent)))
 
 ;(import-static java.awt.event.KeyEvent VK_LEFT VK_RIGHT VK_UP VK_DOWN)
 (def VK_LEFT KeyEvent/VK_LEFT)
