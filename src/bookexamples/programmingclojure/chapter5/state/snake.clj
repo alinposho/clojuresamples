@@ -104,11 +104,37 @@
   (contains? (set body) head))
 
 (head-overlaps-body? {:body [[1 1] [4 5] [6 7] [8 9] [6 7]]})
-(head-overlaps-body? {:body [[1 1] [4 5] [6 7] [8 9] [1 1s]]})
+(head-overlaps-body? {:body [[1 1] [4 5] [6 7] [8 9] [1 1]]})
 
 (def lose? head-overlaps-body?)
 
-(defn eats? [{[snake-head] :body} {apple :location}])
+(defn eats? [{[snake-head] :body} {apple :location}]
+  (= snake-head apple))
+
+(eats? {:body [[1 2] [1 4]]} {:location [1 4]})
+(eats? {:body [[1 2] [1 4]]} {:location [1 2]})
+
+(defn turn [snake newdir]
+  (assoc snake :dir newdir))
+
+(turn (create-snake) [-1 0])
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Now for the mutable STP part of the snake program
+
+(defn reset-game [snake apple]
+  (dosync 
+    (ref-set snake (create-snake))
+    (ref-set apple (create-apple)))
+  nil)
+
+(def snake (ref nil))
+(def apple (ref nil))
+
+(reset-game snake apple)
+@snake
+@apple
 
 
 
