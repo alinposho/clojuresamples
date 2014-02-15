@@ -56,7 +56,10 @@
   :color (Color. 210 50 90)
   :type :apple})
 
+;; Check whether the new function works
 (create-apple)
+;; Now print nicely the location of the apple
+(->> (create-apple) :location (print "Apple location is "))
 
 (defn create-snake []
   {:body (list [1 1])
@@ -75,6 +78,8 @@
 
 (move (create-snake))
 ;-> {:body ([2 1]), ; etc.
+(-> (create-snake) move :body)
+
 (move (create-snake) :grow)
 ;-> {:body ([2 1] [1 1]), ; etc.
 
@@ -84,10 +89,26 @@
 
 (decompose (create-snake))
 
+(defn win? [{body :body}] 
+  "A function to test whether we won the game"
+  (>= (count body) win-lenght))
 
+(win? (create-snake))
 
+(let [win-lenght 1 ]
+  (win? (create-snake)))
 
+(win? {:body [[1 1] [4 5] [6 7] [8 9] [6 7]]})
 
+(defn head-overlaps-body? [{[head & body] :body}]
+  (contains? (set body) head))
+
+(head-overlaps-body? {:body [[1 1] [4 5] [6 7] [8 9] [6 7]]})
+(head-overlaps-body? {:body [[1 1] [4 5] [6 7] [8 9] [1 1s]]})
+
+(def lose? head-overlaps-body?)
+
+(defn eats? [{[snake-head] :body} {apple :location}])
 
 
 

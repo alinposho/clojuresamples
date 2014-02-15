@@ -8,3 +8,6 @@
 ;; However, this will work since we have the strings a and b as keys
 (let [{:strs [a b]} {"a" 1, "b" :p, :p "g"}]
   [a b])
+
+(let [[a] [1 2 3 4]]
+  a)
