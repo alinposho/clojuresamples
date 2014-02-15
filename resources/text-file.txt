@@ -1,1 +1,1 @@
-Some string to be put on the file
+Some string to be put on the file using the new make-* funtions
