@@ -1,4 +1,4 @@
-(ns bookexamples.programmingclojure.chapter6.protocols.datatypes.programming-to-abstractions
+(ns bookexamples.programmingclojure.chapter6.protocolsanddatatypes
   (:import (java.io FileInputStream InputStreamReader BufferedReader
                     FileOutputStream OutputStreamWriter BufferedWriter)))
 
