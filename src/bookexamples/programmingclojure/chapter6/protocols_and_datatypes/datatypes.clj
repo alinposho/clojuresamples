@@ -1,10 +1,11 @@
 (ns bookexamples.programmingclojure.chapter6.protocolsanddatatypes.datatypes
+  (:use [bookexamples.programmingclojure.chapter6.protocolsanddatatypes.protocols])
   (:require [clojure.java.io :as io])
   (:import (java.security KeyStore KeyStore$SecretKeyEntry
                           KeyStore$PasswordProtection)
            (javax.crypto KeyGenerator Cipher CipherOutputStream
                          CipherInputStream)
-           (java.io FileOutputStream)))
+           (java.io FileOutputStream FileInputStream)))
 
 ;; Define a simple datatype
 (deftype CryptoVault [filename keystore password])
@@ -41,7 +42,15 @@
   (make-reader [vault]
     (make-reader (vault-input-stream vault)))
   (make-writer [vault]
-    (make-writer (vault-output-stream-stream vault))))
+    (make-writer (vault-output-stream vault))))
+
+(defn vault-key [vault]
+  (let [password (.toCharArray (.password vault))]
+    (with-open [fis (FileInputStream. (.keystore vault))]
+      (-> (doto (KeyStore/getInstance "JCEKS")
+            (.load fis password))
+        (.getKey "vault-key" password)))))
+
 
 
 
