@@ -38,13 +38,12 @@
 
 ;; But this way one can extend the functionality of a list of objects for a protocol
 (extend-protocol IOFactory
-  InputStream
+  InputStream ;; This could have been left out outside the extend-protocol, i.e using (extend ...) and the example would have worked.
   (make-reader [src]
     (-> src InputStreamReader. BufferedReader.))
    (make-writer [dst]
      (throw (IllegalArgumentException.
               "Can't open as an InputStream.")))
-
    OutputStream
    (make-reader [src]
      (throw
