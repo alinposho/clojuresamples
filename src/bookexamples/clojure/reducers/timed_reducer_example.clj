@@ -26,15 +26,22 @@
 ;; warmup
 (repeat 3 (time-to-run-in-millis seq-reduce))
 
-;; actual run of the sequntial map and reduce
-(avg-time 5 seq-reduce)
-
-;; If youo have a look at the results you will notice that there is no difference 
+;; If you have a look at the results you will notice that there is no difference 
 ;; between using fold and reduce
 (list 
   (avg-time 5 #(reduce + (map inc (filter even? v))))
   (avg-time 5 #(reduce + (r/map inc (r/filter even? v))))
   (avg-time 5 #(r/fold + (r/map inc (r/filter even? v)))))
+
+(defn prime? [n]
+  (not-any? zero? (map #(rem n %) (range 2 (Math/sqrt n)))))
+
+(def v (range 100000))
+
+(list 
+  (avg-time 5 #(reduce + (map inc (filter prime? v))))
+  (avg-time 5 #(reduce + (r/map inc (r/filter prime? v))))
+  (avg-time 5 #(r/fold + (r/map inc (r/filter prime? v)))))
 
 
 
