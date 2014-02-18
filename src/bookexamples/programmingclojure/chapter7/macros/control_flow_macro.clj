@@ -17,3 +17,22 @@
 (unless true (println "This should NOT print!"))
 (unless false (println "This should print."))
 
+
+(macroexpand-1 '(unless true (println "This should NOT print!")))
+
+;; An improved version of unless that works for a variable number of arguments
+(defmacro unless [expr & form]
+  (list 'if expr nil (cons 'do form)))
+
+
+(unless true (println "This should NOT print!") (println "This should NOT print as well!"))
+(unless false (println "This should print!") (println "This should print as well!"))
+
+
+(defmacro unless [expr & form]
+  (list 'if expr nil (conj  form 'do)))
+
+(unless true (println "This should NOT print!") (println "This should NOT print as well!"))
+(unless false (println "This should print!") (println "This should print as well!"))
+
+
