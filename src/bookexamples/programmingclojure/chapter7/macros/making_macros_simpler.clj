@@ -6,6 +6,8 @@
 
 (def lst (java.util.ArrayList.))
 (chain lst isEmpty)
+
+;; Notice that we have to use this for to insert an element in the list instead of "(chain lst add "element")"
 (. lst add "element")
 
 ;; Extend chain to be equivalent to ..
@@ -35,5 +37,16 @@
 (macroexpand '(chain lst iterator next length))
 (chain lst iterator next length)
 
+
+;; Rewrite the chain macro using unquote and splicing unquote
+(defmacro chain 
+  ([x form]
+    `(. ~x ~form))
+  ([x form & more]
+    `(chain (. ~x ~form) ~@more)))
+
+(macroexpand '(chain lst iterator next length))
+
+(chain lst iterator next length)
 
 
