@@ -1,4 +1,4 @@
-(ns bookexamples.programmingclojure.chapter7.macros.creating-name-ia-a-macro)
+(ns bookexamples.programmingclojure.chapter7.macros.creating-names-in-a-macro)
 
 (defmacro bench [func]
   `(let [start# (System/nanoTime)
