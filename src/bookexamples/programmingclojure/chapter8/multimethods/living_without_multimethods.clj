@@ -1,4 +1,4 @@
-(ns bookexamples.programmingclojure.chapter8.multimethods.multimethods
+(ns bookexamples.programmingclojure.chapter8.multimethods.living-without-multimethods
   [:require [clojure.string :as str]])
 
 ;; Living without muyltimethods
