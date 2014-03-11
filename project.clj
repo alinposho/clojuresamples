@@ -5,7 +5,7 @@
             :url "http://www.eclipse.org/legal/epl-v10.html"}
   :dependencies [[org.clojure/clojure "1.5.1"] 
                  [org.clojure/clojure-contrib "1.2.0"]]
-  :main ^:skip-aot bookexamples.core
+  :main ^:skip-aot bookexamples.programmingclojure.chapter9.real.world.example.pinger-main
   :target-path "target/%s"
   :profiles {:uberjar {:aot :all}}
   :plugins [[lein-idefiles "0.2.0"]])
