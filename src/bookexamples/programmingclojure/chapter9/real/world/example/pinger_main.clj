@@ -1,5 +1,6 @@
 (ns bookexamples.programmingclojure.chapter9.real.world.example.pinger-main
-  [:use [bookexamples.programmingclojure.chapter9.real.world.example.pinger]])
+  [:use [bookexamples.programmingclojure.chapter9.real.world.example.pinger]]
+  (:gen-class))
 
 (defn -main [] 
   (let [addresses '("http://www.google.com"
