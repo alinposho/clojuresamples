@@ -1,14 +1,27 @@
 (ns bookexamples.programmingclojure.chapter9.real.world.example.pinger-main
   [:use [bookexamples.programmingclojure.chapter9.real.world.example.pinger]]
+  [:use [bookexamples.programmingclojure.chapter9.real.world.example.pinger-scheduler :as scheduler]]
   (:gen-class))
 
+(def immediately 0)
+(def every-minute (* 60 1000))
+(def every-3-seonds (* 3 1000))
+
+(defn start 
+  "REPL helper. Start pinger on executor e."  
+  [e]
+  (scheduler/periodically e check :initial-delay immediately :delay every-3-seonds))
+
+(defn stop 
+  "REPL helper. Shutdown executor e."  
+  [e]
+  (scheduler/shutdown-executor e))
+
 (defn -main [] 
-  (let [addresses '("http://www.google.com"
-                     "http://www.amazon.com"
-                     "http://www.google.com/badurl")]
-  (while true
-    (doseq [address addresses]
-      (println (str address " available? " (available? address))))
-    (java.lang.Thread/sleep (* 1000 60)))))
+  (start (scheduler/scheduled-executor 1)))
+
 
 ;(-main)
+;(def e (scheduler/scheduled-executor 1))
+;(start e)
+;(stop e)
