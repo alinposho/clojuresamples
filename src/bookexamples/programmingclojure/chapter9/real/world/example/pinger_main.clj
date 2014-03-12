@@ -18,7 +18,9 @@
   (scheduler/shutdown-executor e))
 
 (defn -main [] 
-  (start (scheduler/scheduled-executor 1)))
+  (do 
+    (println "The pinger app is running. All output is in the pinger.log file")
+    (start (scheduler/scheduled-executor 1))))
 
 
 ;(-main)
