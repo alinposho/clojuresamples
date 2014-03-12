@@ -1,5 +1,6 @@
 (ns bookexamples.programmingclojure.chapter9.real.world.example.pinger
-  [:import [java.net URL HttpURLConnection]])
+  [:import [java.net URL HttpURLConnection]]
+  [:require [clojure.tools.logging :as logger]])
 
 (defn response-code [address]   (let [conn ^HttpURLConnection (.openConnection (URL. address)) 
          code (.getResponseCode conn)] 
@@ -14,12 +15,17 @@
 ;(available? "http://www.google.com")
 ;(available? "http://www.google.com/bad_url")
 
+(defn record-availability [address]
+  (if (available? address)
+    (logger/info (str address " is responding normally"))
+    (logger/error (str address " is not available"))))
+
 (defn check [] 
   (let [addresses '("http://www.google.com"
                      "http://www.amazon.com"
                      "http://www.google.com/badurl")]
     (doseq [address addresses]
-      (println (str address " available? " (available? address))))))
+      (record-availability address))))
 
 ;(check)
 
