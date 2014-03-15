@@ -1,6 +1,7 @@
 (ns bookexamples.programmingclojure.chapter9.real.world.example.pinger
   [:import [java.net URL HttpURLConnection]]
-  [:require [clojure.tools.logging :as logger]])
+  [:require [clojure.tools.logging :as logger]
+            [bookexamples.programmingclojure.chapter9.real.world.example.pinger-config :as config]])
 
 (defn response-code [address]   (let [conn ^HttpURLConnection (.openConnection (URL. address)) 
          code (.getResponseCode conn)] 
@@ -21,11 +22,8 @@
     (logger/error (str address " is not available"))))
 
 (defn check [] 
-  (let [addresses '("http://www.google.com"
-                     "http://www.amazon.com"
-                     "http://www.google.com/badurl")]
-    (doseq [address addresses]
-      (record-availability address))))
+    (doseq [address (config/urls (config/config))]
+      (record-availability address)))
 
 ;(check)
 
