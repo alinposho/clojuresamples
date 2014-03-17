@@ -6,21 +6,30 @@
 (defmethod my-print String [s]
   (.write *out* s))
 
-(my-print "Hello")
+;(my-print "Hello")
 ;(my-print nil)
 
 (defmethod my-print nil [n]
   (.write *out* "nil"))
 
-(my-print nil)
+;(my-print nil)
 
 ;; Dispatch is inheritance aware
 (defmethod my-print Number [n]
   (.write *out* (.toString n)))
 ;; Notice that my-print works with Integers which are subtypes of Number 
-(my-print 8)
-(my-print 8.0)
+;(my-print 8)
+;(my-print 8.0)
 
 (isa? Integer Number)
+
+;; This is how one defines default dispatch for multimenthods
+(defmethod my-print :default [s]
+  (.write *out* "#<")
+  (.write *out* (.toString s))
+  (.write *out* ">"))
+
+;(my-print (java.util.Date.))
+
 
 
