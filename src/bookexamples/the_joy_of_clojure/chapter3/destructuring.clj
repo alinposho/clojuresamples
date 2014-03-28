@@ -31,9 +31,16 @@
 (let [{:strs [f-name m-name l-name]} {"f-name" "Guy" "m-name" "Lewis" "l-name" "Steele"}]
 	(str l-name ", " f-name " " m-name))
 
+
 (let [{:strs [title f-name m-name l-name] :or {title "Mr."}} {"f-name" "Guy" "m-name" "Lewis" "l-name" "Steele"}]
 	(str title " " l-name ", " f-name " " m-name))
 
+;; An example of destructuring maps based on symbols using the :syms keyword
+(let [one 1
+	  two 2
+	  three 3
+      {:syms [one two three]} {'one "Guy" 'two "Lewis" 'three "Steele"}]
+	(str three ", " one " " two))
 
 
 
