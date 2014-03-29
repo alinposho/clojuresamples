@@ -1,4 +1,4 @@
-(ns the_joy_of_clojure.symbolic-resolution)
+(ns the-joy-of-clojure.symbolic-resolution)
 
 ;; symbols are not based on name alone
 (identical? 'goat 'goat)

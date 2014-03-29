@@ -1,4 +1,4 @@
-(ns the_joy_of_clojure.destructuring)
+(ns the-joy-of-clojure.destructuring)
 
 ; (re-seq #"\d" "clojure 1.1.0")
 

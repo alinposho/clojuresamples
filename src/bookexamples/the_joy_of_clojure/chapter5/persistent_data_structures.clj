@@ -1,4 +1,4 @@
-(ns the_joy_of_clojure.persistent-data-structures)
+(ns the-joy-of-clojure.persistent-data-structures)
 
 (def ds (into-array [:willie :barnabas :adam]))
 ; (seq ds)

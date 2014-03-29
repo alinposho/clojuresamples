@@ -1,4 +1,4 @@
-(ns the_joy_of_clojure.graphics)
+(ns the-joy-of-clojure.graphics)
 
 (defn xors [max-x max-y]	
 	(for [x (range max-x) 
