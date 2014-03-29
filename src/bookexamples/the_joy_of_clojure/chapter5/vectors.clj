@@ -1,4 +1,4 @@
-(ns the-joy-of-clojure.persistent-data-structures)
+(ns the-joy-of-clojure.vectors)
 
 (vec (range 1 10))
 
