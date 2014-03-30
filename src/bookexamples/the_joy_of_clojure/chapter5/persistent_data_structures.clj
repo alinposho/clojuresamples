@@ -16,3 +16,6 @@
 (class (seq (hash-map :q 1)))
 (seq (keys (hash-map :q 1)))
 (class (seq (keys (hash-map :q 1))))
+
+;; list* prepends the arguments to the last argument, treated as a sequence
+(list* [1 2] '(3 4))
