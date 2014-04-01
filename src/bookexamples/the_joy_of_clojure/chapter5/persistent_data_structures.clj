@@ -19,3 +19,12 @@
 
 ;; list* prepends the arguments to the last argument, treated as a sequence
 (list* [1 2] '(3 4))
+
+;; zip and zipmap examples
+
+;; This will create a map
+(zipmap [1 2 3 4] '(:a :b :c :d :e))
+
+(interleave [1 2 3 4] '(:a :b :c :d :e)) ;; Notice that the last element of the second collection is ignored
+
+
