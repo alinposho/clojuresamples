@@ -19,13 +19,12 @@ and creates partitions based on the pivot, defined as 'work'."
 	(sort-parts (list xs)))
 
 
- (qsort [4 2 9 17 3 1])
+; (qsort [4 2 9 17 3 1])
 
 (defn random-seq 
   	"Returns a lazy sequence of random integer between 0 (inclusive) and n (exclusive)"
-	[n]
+  [n]
 	(repeatedly #(rand-int n)))
 
-(take 10 (random-seq 30))
-
- (qsort (take 10 (random-seq 100)))
+;(take 10 (random-seq 30))
+;(qsort (take 10 (random-seq 100)))
