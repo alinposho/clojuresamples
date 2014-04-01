@@ -8,7 +8,7 @@
 
 
 (defn positive-numbers 
-	([] (positive-numbers 1))
-	([n] (cons n (lazy-seq (positive-numbers (inc n))))))
+  ([] (positive-numbers 1))
+  ([n] (cons n (lazy-seq (positive-numbers (inc n))))))
 
 (take 10 (positive-numbers))
