@@ -1,0 +1,1 @@
+(ns the-joy-of-clojure.proxy-example)
