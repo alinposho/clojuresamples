@@ -8,6 +8,16 @@
 (map coll [{} #{} [] ()]))
 
 (defn coll2 [c]
-	({() :list  #{} :set {} :map} (empty c) (when (reversible? c) :vector)))
+	({() :list  #{} :set {} :map} (empty c) 
+		(when (reversible? c) :vector)))
 
 (map coll2 [{} #{} [] ()])
+
+(defn coll3 [c]
+	((comp #(cond (= % {}) :map 
+				 (= % #{}) :set 
+				 (= (conj % 1 2) [1 2]) :vector 
+				 true :list) 
+	 empty) c))
+
+(map coll3 [{} #{} [] ()])
