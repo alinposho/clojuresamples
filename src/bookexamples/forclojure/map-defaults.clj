@@ -14,4 +14,7 @@
 
 (map-defaults :a '(1 2 3 4 5))
 
+;; Some of the solutions on the web
+(#(zipmap %2 (repeat %1)) :a [2 3 4])
+
 )
