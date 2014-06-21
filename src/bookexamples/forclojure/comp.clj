@@ -1,7 +1,7 @@
 (ns bookexamples.forclojure.comp)
 
 (defn my-comp [& fs]
-	(reduce (fn [f1 f2] (fn [params] (f2 (f1 params)))) (reverse fs)))
+	(reduce (fn [f1 f2] (fn [& params] (f2 (apply f1 params)))) (reverse fs)))
 
 
 (comment
