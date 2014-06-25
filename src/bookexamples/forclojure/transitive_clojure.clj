@@ -1,60 +1,32 @@
 (ns bookexamples.forclojure.transitive-clojure)
 
-;; Transform set to a set of relations
-(def rels (set (map #(apply hash-map %) #{[8 4] [9 3] [4 2] [27 9]})))
-rels
-(map #(filter not-empty (clojure.set/project rels [(key (first %))])) rels)
-(map identity rels)
-(filter not-empty (clojure.set/project rels [4]))
-(key (first {4 2}))
-;; Get relation values
-(reduce #(conj %1 (val (first %2))) [] rels)
-(reduce #(conj %1 (hash-map :a %2)) #{} [1 2 3 4])
-
-(defn get-vals [rels]
-	(reduce #(conj %1 (val (first %2))) [] rels))
-(get-vals rels)
-
-(defn get-keys [rels]
-	(reduce #(conj %1 (key (first %2))) [] rels))
-(get-keys rels)
-
-(defn project-relations [rels ks]
-	(set (filter not-empty (clojure.set/project rels ks))))
-
-(project-relations rels [8 4])
-
-(defn find-trans 
-	"Finds the transitive relations starting from this key and returns them as a set"
-	([k rels] 
-		(let [vs (project-relations rels [k])] 
-			  (find-trans k rels vs)))
-	([k rels acc]
-		(let [transitive-keys (get-vals acc)
-		  	  vs (project-relations rels transitive-keys)
-		  	  transitive-relations-values (get-vals vs)
-		  	  transitive-relations (reduce #(conj %1 (hash-map k %2)) #{} transitive-relations-values)
-		  	  new-transitive-relations (clojure.set/difference transitive-relations acc)]
-		  (if (empty? new-transitive-relations) acc
-			  (recur k rels (clojure.set/union acc new-transitive-relations))))))
-
-(find-trans 8 rels)
-(find-trans 8 rels #{{8 4}})
-
-(defn vector-to-map [v] 
-	(set (map #(apply hash-map %) v)))
-(vector-to-map #{[8 4] [9 3] [4 2] [27 9]})
-
-(defn map-to-vector [m]
-	(reduce #(conj %1 (key %2) (val %2)) [] m))
-(map-to-vector {1 2 4 5})
-
 (defn transitive-clojure [relations]
-	(let [rels (vector-to-map relations)
-		  ks (get-keys rels)]
-		(set (map map-to-vector (reduce clojure.set/union (map #(find-trans % rels) ks))))))
+	(letfn [(vector-to-map [v] 
+				(set (map #(apply hash-map %) v)))
+			(map-to-vector [m]
+				(reduce #(conj %1 (key %2) (val %2)) [] m))
+			(project-relations [rels ks]
+				(set (filter not-empty (clojure.set/project rels ks))))
+			(get-keys [rels]
+				(reduce #(conj %1 (key (first %2))) [] rels))
+			(get-vals [rels]
+				(reduce #(conj %1 (val (first %2))) [] rels))
+			(find-trans 
+				([k rels] 
+					(let [vs (project-relations rels [k])] 
+						  (find-trans k rels vs)))
+				([k rels acc]
+					(let [transitive-keys (get-vals acc)
+					  	  vs (project-relations rels transitive-keys)
+					  	  transitive-relations-values (get-vals vs)
+					  	  transitive-relations (reduce #(conj %1 (hash-map k %2)) #{} transitive-relations-values)
+					  	  new-transitive-relations (clojure.set/difference transitive-relations acc)]
+					  (if (empty? new-transitive-relations) acc
+						  (recur k rels (clojure.set/union acc new-transitive-relations))))))]
+		(let [rels (vector-to-map relations)
+			  ks (get-keys rels)]
+			(set (map map-to-vector (reduce clojure.set/union (map #(find-trans % rels) ks)))))))
 
-(transitive-clojure #{[8 4] [9 3] [4 2] [27 9]})
 
 
 (comment
@@ -79,8 +51,21 @@ rels
 
 
 ;; Some of the solutions on the web
-(not= true true false)
-(not= true true)
-(not= false false false)
+(fn [s]
+  (letfn [(step [ele s]
+            (let [n (filter #(= (second ele) (first %)) s)]
+              (if (seq n)
+                (let [t (map #(vec [(first ele) (second %)]) n)]
+                  (cons ele (mapcat #(step % s) t)))
+                [ele])))]
+    (set (mapcat #(step % s) s))))
+
+(letfn [
+    (update [e x] (let [
+        in  (for [ei e :when (= x (second ei))] (first  ei))
+        out (for [ei e :when (= x (first  ei))] (second ei))]
+        (into e (for [v1 in v2 out] [v1 v2]))))
+    (trans [e] (reduce update e (distinct (flatten (vec e)))))]
+    trans)
 
 )
