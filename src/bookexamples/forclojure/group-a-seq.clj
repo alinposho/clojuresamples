@@ -16,8 +16,17 @@
    {1 [[1] [3]], 2 [[1 2] [2 3]], 3 [[1 2 3]]})
 
 ;; Some of the solutions on the web
-(not= true true false)
-(not= true true)
-(not= false false false)
+(def f1 (comp #(zipmap (map ffirst %) (map (partial map peek) %)) (partial partition-by first) sort (fn [f x] (map-indexed #(vector (f %2) %1 %2) x)))))
+(f1 #(> % 5) [1 3 6 8])
+(def f2 
+	(fn my-group-by [f coll] 
+		  (persistent! 
+		    (reduce (fn [ret x] 
+		      (let [k (f x)] 
+		(assoc! ret k 
+		  (conj (get ret k []) x)))) 
+		(transient {}) coll))))
+
+
 
 )
