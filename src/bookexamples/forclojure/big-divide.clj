@@ -3,10 +3,26 @@
 ;; First solution - does not work for large values of n
 (defn big-divide [n a b]
 	(letfn [(multiples [elem]
-				(take-while #(< % n) 
-						(map #(*' % elem) (iterate inc 1))))]
-	(apply +' (into (into (set (multiples a)) (multiples b)) (multiples (* a b))))))
+    				(take-while #(< % n) 
+  						(map #(* % elem) (iterate inc 1N))))]
+	(reduce + (into (set (multiples a)) (multiples b)))))
 
+
+(defn big-divide [n a b]
+  (letfn [(multiples 
+            ([elem]
+              (take-while #(< % n) 
+                (map #(* % elem) (iterate inc 1N))))
+            ([elem not-elem]
+                (take-while #(< % n) 
+                  (map #(* % elem) (filter #(not= 0 (mod % not-elem)) (iterate inc 1N))))))]
+  (+ (reduce + (multiples a b)) (reduce + (multiples b a)) (reduce + (multiples (* a b))))))
+
+; (defn partial-sum [n i elem not-elem]
+;   (let [ (* i elem)]
+;     (if ())))
+
+(time (reduce #(+ %1 (apply + %2)) 0 (take-while #(< (div n 7))  (map #(vector (* % 7) (* % 11)) (iterate inc 1N)))))
 
 (comment
 
@@ -15,7 +31,11 @@
 
 (big-divide 100 5 7)
 (big-divide 10 3 5)
-(big-divide 1000 3 5)
+(time (big-divide 1000 3 5))
+(time(big-divide 1000000 3 5))
+(time(big-divide 10000000 3 5))
+(time(big-divide 100000000 3 5))
+(time(big-divide 100000000 7 11))
 
 (= 0 (big-divide 3 17 11))
 (= 23 (big-divide 10 3 5))
