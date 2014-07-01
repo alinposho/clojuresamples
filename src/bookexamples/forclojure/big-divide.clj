@@ -18,11 +18,21 @@
                   (map #(* % elem) (filter #(not= 0 (mod % not-elem)) (iterate inc 1N))))))]
   (+ (reduce + (multiples a b)) (reduce + (multiples b a)) (reduce + (multiples (* a b))))))
 
-; (defn partial-sum [n i elem not-elem]
-;   (let [ (* i elem)]
-;     (if ())))
+;; Solution that works for large values of n
+(defn big-divide [n a b]
+  (if (> a b) 
+    (recur n b a)
+    (let [m (- n 1)
+          qa (quot m a)
+          qb (quot m b)
+          qab (quot m (*' a b))]
+          (+'
+            (- 
+              (/ (*' qa (inc qa) a) 2)
+              (/ (*' qab (inc qab) a b) 2)
+            )
+            (/ (*' qb (inc qb) b) 2)))))
 
-(time (reduce #(+ %1 (apply + %2)) 0 (take-while #(< (div n 7))  (map #(vector (* % 7) (* % 11)) (iterate inc 1N)))))
 
 (comment
 
@@ -50,10 +60,10 @@
 
 ;; Some of the solutions on the web
 
-(partial iterate
-           (fn [nums]
-             (vec
-               (map +' (conj nums 0) (cons 0 nums)))))
-               
+(fn [n a b]
+    (let [gauss (fn [x] (/ (* x (+ x 1)) 2))
+          gsum (fn [x] (* x (gauss (quot (dec n) x))))]
+      (- (+ (gsum a) (gsum b))
+         (gsum (* a b)))))               
 
 )
