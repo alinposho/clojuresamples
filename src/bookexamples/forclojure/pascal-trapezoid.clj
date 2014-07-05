@@ -1,4 +1,3 @@
-
 (ns bookexamples.forclojure.pascal-trapezoid)
 
 ;; First working solution
