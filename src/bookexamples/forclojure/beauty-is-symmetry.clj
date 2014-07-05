@@ -10,14 +10,16 @@
 	(if (not (coll? xs)) xs
 		(vector (first xs) (mirror (last xs)) (mirror (second xs)))))
 
-(= [2 [3 nil [4 [6 nil nil] [5 nil nil]]] nil]
-	(mirror [2 nil [3 [4 [5 nil nil] [6 nil nil]] nil]]))
-(mirror '(:b nil nil))
 
 (comment
 
 (load-file "src/bookexamples/forclojure/beauty-is-symmetry.clj")
 (refer 'bookexamples.forclojure.beauty-is-symmetry)
+
+(= [2 [3 nil [4 [6 nil nil] [5 nil nil]]] nil]
+	(mirror [2 nil [3 [4 [5 nil nil] [6 nil nil]] nil]]))
+(mirror '(:b nil nil))
+
 
 (= (symmetric? '(:a (:b nil nil) (:b nil nil))) true)
 (= (symmetric? '(:a (:b nil nil) nil)) false)
