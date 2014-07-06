@@ -1,15 +1,14 @@
 (ns bookexamples.forclojure.lcm)
 
-(defn lcm 
-	([a b]
-		(letfn [(gcd [a b]
-					(if (< a b) 
-						(recur b a)
-						(first (filter #(= 0 (rem a %) (rem b %)) (iterate dec b)))))]
-		(/ (* a b) (gcd a b))))
-	([& bs] 
-		(apply min (map #(apply lcm) (partition 2 1 bs)))))
-
+(defn lcm [& X]
+	  (loop [Xk (vec X)]
+	    (if (apply = Xk) 
+	      (first Xk)
+	      (let [xkm (apply min Xk)
+	      		xkm-index (.indexOf Xk xkm)
+	      		xk0 (nth X xkm-index)
+	      		xkm+1 (+ xkm xk0)]
+		      (recur (assoc Xk xkm-index xkm+1))))))
 
 (comment
 
@@ -25,9 +24,8 @@
 
 
 ;; Some of the solutions on the web
-(comp (partial apply distinct?)
-        (partial apply concat))
-
-#(apply distinct? (apply concat %))
+(fn lcm [x1 & xn] (first (drop-while 
+    (fn [s] (not-every? #(zero? (mod s %)) xn))
+    (iterate (partial + x1) x1))))
 
 )
