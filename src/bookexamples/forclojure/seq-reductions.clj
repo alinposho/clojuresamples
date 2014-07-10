@@ -18,7 +18,7 @@
 (reductions conj [1] [2 3 4])
 (= (take 5 (seq-reductions + (range))) [0 1 3 6 10])
 (= (seq-reductions conj [1] [2 3 4]) [[1] [1 2] [1 2 3] [1 2 3 4]])
-(= (last (seq-reductions * 2 [3 4 5])) (reduce * 2 [3 4 5]) 120)
+(= (last (seq-reductions * 2 [3 4 5])) (reduce * 2 [3 4 5]) 12 0)
 
 
 ;; Some of the solutions on the web

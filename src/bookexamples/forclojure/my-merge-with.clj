@@ -1,14 +1,14 @@
 (ns bookexamples.forclojure.my-merge-with)
 
 (defn my-merge-with
-	([f xs ys]
-		(reduce (fn [acc pair] 
-					(let [k (key pair)
-						  vlatter (val pair)
-						  vres (acc k)]
-						(assoc acc k (if (nil? vres) vlatter (f vres vlatter)))))
-			xs ys))
-	([f xs ys & zrest] (reduce #(my-merge-with f %1 %2) (my-merge-with f xs ys) zrest)))
+  ([f xs ys]
+    (reduce (fn [acc pair] 
+          (let [k (key pair)
+              vlatter (val pair)
+              vres (acc k)]
+            (assoc acc k (if (nil? vres) vlatter (f vres vlatter)))))
+      xs ys))
+  ([f xs ys & zrest] (reduce #(my-merge-with f %1 %2) (my-merge-with f xs ys) zrest)))
 
 (comment
 
@@ -34,8 +34,8 @@
 
 
 (fn [f & x] 
-	((comp #(zipmap (keys %) (map (comp (partial reduce f) (partial map last)) (vals %))) 
-		(partial group-by first) (partial apply concat)) x))
+  ((comp #(zipmap (keys %) (map (comp (partial reduce f) (partial map last)) (vals %))) 
+    (partial group-by first) (partial apply concat)) x))
 
 
 
