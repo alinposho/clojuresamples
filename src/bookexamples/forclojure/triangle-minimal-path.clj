@@ -1,16 +1,16 @@
 (ns bookexamples.forclojure.triangle-minimal-path)
 
-(defn min-path [tgl]
-	(if (= 1 (count tgl)) 
-    (first (first tgl))
-    (let [rtgl (reverse tgl)
-          lst (first rtgl)
-          blst (second rtgl)
-          nlst (vec 
-                  (map-indexed 
-                    (fn [idx itm] (apply min (map (comp (partial + itm) lst) (vector idx (inc idx)))))
-                      blst))]
-      (recur (reverse (cons nlst (drop 2 rtgl)))))))
+(defn sum-min-path [tgl]
+  (letfn [(min-path 
+            ([[x1 x2 & xs]]
+              (if (nil? x2) x1
+                (recur (cons (compute-new-vector x1 x2) xs)))))
+          (compute-new-vector [xn xn-1]
+            (vec 
+              (map-indexed 
+                (fn [idx itm] (apply min (map (comp (partial + itm) xn) (vector idx (inc idx)))))
+                  xn-1)))]
+  (first (min-path (reverse tgl)))))
 
 (defn new-last [lst blst] 
   (map-indexed 
@@ -24,9 +24,9 @@
 (load-file "src/bookexamples/forclojure/triangle-minimal-path.clj")
 (refer 'bookexamples.forclojure.triangle-minimal-path)
 
-(min-path [1])
+(sum-min-path [1])
 
-(min-path '([1]
+(sum-min-path '([1]
           [2 4]
          [5 1 4]
         [2 3 4 5]))
