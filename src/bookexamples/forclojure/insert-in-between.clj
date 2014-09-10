@@ -4,7 +4,9 @@
 (defn insert-in-between [p elem [x & xs :as s]]
   (cond 
     (or (nil? x) (nil? (first xs))) s
-    :else (concat (if (p x (first xs)) [x elem] [x]) (lazy-seq (insert-in-between p elem xs)))))
+    :else (concat 
+            (if (p x (first xs)) [x elem] [x]) 
+            (lazy-seq (insert-in-between p elem xs)))))
 
 ;; This does not work for lazy seqs and it's not complete
 (reduce concat (map (fn [[a b]](if (< a b) [a :less b] [a b])) (partition 2 1 [1 6 7 4 3])))
@@ -28,17 +30,24 @@
 
 ;; Some of the solutions on the web
 ;; I don't want to know what this does
-(fn f
-  ([n p [x & xs :as xxs]]
-   (if (zero? (dec n))
-     (take-while (complement p) xxs)
-     (cons x (f (if (p x) (dec n) n) p xs)))) 
-  )
-  
-(fn insert-in-between [n f coll]
-  (let [first-ele (first coll)]
-    (if (f first-ele)
-      (if (> n 1)
-        (cons first-ele (insert-in-between (dec n) f (rest coll))))
-      (cons first-ele (insert-in-between n f (rest coll))))))
+(fn i [p a c]                                                                                                                
+    (lazy-seq                                                                                                                  
+      (let [[f s & t] c
+            r (i p a (rest c))                                                                                                 
+            e cons]                                                                                                            
+        (if s                                                                                                                  
+          (e f                                                                                                                 
+             (if (p f s)                                                                                                       
+               (e a r)                                                                                                         
+               r))                                                                                                             
+          c))))
+
+(fn inbetween [f x s] (let [
+    pairs (partition 2 1 s)
+    ins (cons nil (for [i pairs] (when (apply f i) x)))
+    insed (interleave ins s)]
+    (keep identity insed)))
+
+
+
 )
