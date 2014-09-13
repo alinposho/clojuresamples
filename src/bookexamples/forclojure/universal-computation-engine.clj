@@ -4,12 +4,31 @@
 (defn compute [body]
   (fn [params]
     (eval `(let [~@(flatten (vec params))] ~body))))
-  
+
+;; Version 2 without using 'eval'
+(defn compute [[op & body]]
+  (let [ops {'+ +, '/ /, '- -, '* *}]
+    (fn [params]
+      (apply 
+        (ops op)
+        (map (fn [elem] 
+                (cond 
+                  (seq? elem) ((compute elem) params) 
+                  (symbol? elem) (params elem)
+                  :else elem)) 
+              body)))))
+
+
 ;; Some of my trials
 (eval `(let [~@'(a 1 b 2)] ~'(+ a b)))
+(defmacro u [] `(let [~@'(a 1 b 2)] ~'(+ a b)))
 (eval `(let [~@(flatten (vec '{a 1 b 2}))] ~'(+ a b)))
 
 (flatten (vec '{a 1 b 2}))
+
+(let [lst '(+ a b)
+      m '{a 1 b 3}] 
+      ((first lst) (m (second lst)) (m (last lst))))
 
 (comment
 
@@ -32,5 +51,21 @@
 
 
 ;; Some of the solutions on the web
+(fn f [c]
+  (fn [b]
+    (if (seq? c)
+     (let [[x & y] c]
+      (apply ({'* * '/ / '+ + '- -} x)
+             (map #((f %) b) y)))
+      (if-let [a (b c)]
+          a
+          c)
+    )))
+
+partial (fn compute-with [x env] (letfn [
+    (compute [x] (if (list? x) 
+        (#(apply (first %) (rest %)) (map compute x))
+        (or (env x) ({'+ + '- - '* * '/ /} x) x)))]
+    (compute x)))
 
 )
