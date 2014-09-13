@@ -22,28 +22,6 @@
                       (map (fn [[a b]] (cons a (quot-mod 5 b))) (map (partial quot-mod 9) (num->digits 10 n)))))
                   [["U" "U" "U" "M"] ["CM" "D" "CD" "C"] ["XC" "L" "XL" "X"] ["IX" "V" "IV" "I"]])))))
 
-;; This was used for testing
-(letfn [(num->digits [base num]
-            (loop [n num res []]
-              (if (zero? n)
-                res
-                (recur (long (/ n base)) (cons (mod n base) res)))))
-        (quot-mod [base n]
-          (list (quot n base) (mod n base)))
-        (normalize [s] 
-          (if (>= (count s) 4) 
-            s
-            (recur (cons '(0 0 0 0) s))))
-        (convert [rn d]
-          (flatten (map repeat rn d)))]
-  (apply str (flatten 
-              (map convert 
-                (normalize 
-                  (map (fn [[a b c]] (cons a (cons b (quot-mod 4 c))))
-                    (map (fn [[a b]] (cons a (quot-mod 5 b))) (map (partial quot-mod 9) (num->digits 10 14)))))
-                [["U" "U" "U" "M"] ["CM" "D" "CD" "C"] ["XC" "L" "XL" "X"] ["IX" "V" "IV" "I"]]))))
-
-
 (comment
 
 (load-file "src/bookexamples/forclojure/write-roman-numerals.clj")
@@ -74,6 +52,5 @@
     (<= 4 x) (str "IV" (roman (- x 4)))
     (<= 1 x) (str "I" (roman (- x 1)))
     true ""))
-
 
 )
