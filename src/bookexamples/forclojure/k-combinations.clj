@@ -4,10 +4,7 @@
 ;; Given a sequence S consisting of n elements generate all k-combinations of S, i. e. generate all possible sets consisting of k distinct elements taken from S. The number of k-combinations for a sequence is equal to the binomial coefficient.
 
 (defn k-combinations [k st]
-  (cond 
-    (> k (count st)) #{}
-    (= 1 k) (set (map hash-set st))
-    :else 
+  (if (<= k 0) #{#{}}
       (set 
         (for [s st
               subst (k-combinations (dec k) st)
