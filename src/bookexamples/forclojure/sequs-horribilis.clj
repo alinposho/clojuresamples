@@ -2,24 +2,6 @@
 
 ;; Problem 112: 
 ;; Create a function which takes an integer and a nested collection of integers as arguments. Analyze the elements of the input collection and return a sequence which maintains the nested structure, and which includes all elements starting from the head whose sum is less than or equal to the input integer.
-
-;; Does not work for lazy infinite collections
-(defn sequs [n sq]
-	(if (seq? (seq sq))
-		(let [[prfx [hd & tl]] (split-with integer? sq)
-					sum (apply + prfx)
-					sub (sequs (- n sum)  hd)
-					append-rst (fn [pres sum [hd & tl]] 
-												(if (or (nil? hd) (> (+ sum hd) n )) 
-													pres
-													(recur (conj pres hd) (+ sum hd) tl)))
-					pres (if (nil? sub) 
-										(append-rst [(first prfx)] (first prfx) (rest prfx))
-										(conj (vec prfx) sub))]
-				; [prfx sub sm pres])))
-		(append-rst (vec pres) (apply + (flatten pres)) tl)
-				)))
-
 (defn sequs [n sq]
 	(letfn [(append-rst [pres sum [hd & tl]] 
 						(cond
