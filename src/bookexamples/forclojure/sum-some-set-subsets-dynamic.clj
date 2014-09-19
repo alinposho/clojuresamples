@@ -25,13 +25,24 @@
             (filter #(= (set sts) %) (extract-initial-sets (all-combinations-mapped sts))))]
     (not (empty? (equiv-sum-sets sts)))))
 
-(def sum-subset? [s set]
-  (let [A (apply + (filter pos? set))
-        B (apply + (filter neg? set))]
-    (letfn [(Q [i s])]
-
-      )))
-
+(defn sum-subset? [s x]
+  (let [A (apply + (filter neg? x))
+        B (apply + (filter pos? x))
+        N (dec (count x))]
+    (letfn [(Q [i s]
+              (do 
+                (println (str "A=" A "B=" B "i=" i "s=" s))
+              (cond 
+                (not (and (<= A s B) (<= 0 i N))) false
+                ; :else (do (println (str "A=" A "B=" B "i=" i "s=" s)) true)))]
+                (zero? s) (= (x 0) s)
+                :else 
+                      (or 
+                        (Q (dec i) s) 
+                        (= (x i) s) 
+                        (Q (dec i) (- s (x i)))))))]
+      (let [mQ (memoize Q)]
+        (Q N s)))))
 
 
 ;; Solution that does not work for large sets!!!
@@ -79,39 +90,5 @@
 
 
 
-;; Some trials
-(filter #(= #{#{1 2 3 4 5} #{5 6}} %)
- (set (map (fn [vct] (set (map second (val vct))))
-  (let [
-        comb-st (fn [st]  (map #(list % st) (combinations (count st) st)))
-        combs (mapcat comb-st sts)]
-    (group-by #(apply + (first %)) combs))))))
-
-(defn combinations [k st]
-  (if (<= k 0) #{#{}}
-      (set 
-        (for [s st
-              subst (combinations (dec k) st)
-              :let [nsubst (conj subst s)]]
-          nsubst))))
-
-(let [st #{1 2 3 4}
-      combs (combinations (count st) st)]
-  (group-by #(apply + (first %)) (map #(list % st) combs)))
-
-(let [sts [#{1 2 3 4} #{5 6}]
-      comb-st (fn [st]  (map #(list % st) (combinations (count st) st)))
-      combs (mapcat comb-st sts)]
-      ; combs)
-  (group-by #(apply + (first %)) combs))
-
-
-; (filter #(= (hash-set (map second (val %))) (hash-set #{1 2 3 4 5} #{5 6}))
-(filter #(= #{#{1 2 3 4 5} #{5 6}} %)
- (set (map (fn [vct] (set (map second (val vct))))
-  (let [sts [#{1 2 3 4 5} #{5 6}]
-        comb-st (fn [st]  (map #(list % st) (combinations (count st) st)))
-        combs (mapcat comb-st sts)]
-    (group-by #(apply + (first %)) combs)))))
 
 )
