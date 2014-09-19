@@ -1,7 +1,7 @@
 (ns bookexamples.forclojure.sum-some-set-subsets-dynamic)
 
 ;; Problem 131: 
-;; Given a variable number of sets of integers, create a function which returns true iff all of the sets have a non-empty subset with an equivalent summation.
+;; Given a variable number of sets of integers, create a function which returns true if all of the sets have a non-empty subset with an equivalent summation.
 
 ;; Solution that does not work for large sets!!!
 (defn some-subsets? [& xs] 
@@ -19,13 +19,12 @@
                                             (= (x i) s)
                                             (Q (dec i) s) 
                                             (Q (dec i) (- s (x i))))))]
-                            ((memoize Q) N s))))]
+                            ((memoize Q) N s))))
+        all-sets-have-sum? (fn [s] 
+                              (every? true? 
+                                  (map #(sum-subset? s (vec %)) xs)))]
     (not-every? false? 
-      (map 
-        (fn [s] 
-          (every? true? 
-            (map #(sum-subset? s (vec %)) xs)))
-        (range A (inc B))))))
+      (map all-sets-have-sum? (range A (inc B))))))
 
 
 (defn sum-subset? [s x]
