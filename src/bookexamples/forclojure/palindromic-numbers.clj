@@ -6,33 +6,51 @@
 ;; palindromic numbers that are not less than n.
 ;; The most simple solution will exceed the time limit!
 (defn palindroms [n]
-  (rest (iterate next-palindrome (dec n))))
+  (letfn [(to-number [rs]
+            (loop [res (last rs)
+                   pow 10N
+                   r (rest (reverse rs))]
+              (if (empty? r) res
+                (recur (+ res (* pow (first r))) (* 10 pow) (rest r)))))
 
-;;(take 4 (palindroms 10))
+          (to-base [n base]
+            (loop [xs (list (mod n base))
+                    n (quot n base)]
+              (if (zero? n) xs
+                (recur (cons (mod n base) xs) (quot n base)))))
 
-(defn to-number [rs]
-  (loop [res (last rs)
-  			 pow 10
-  			 r (rest (reverse rs))]
-	  (if (empty? r) res
-	    (recur (+ res (* pow (first r))) (* 10 pow) (rest r)))))
+          (palindrom? [n]
+            (= (reverse (to-base n 10)) (to-base n 10)))
 
-(defn to-base [n base]
-  (loop [xs (list (mod n base))
-          n (quot n base)]
-    (if (zero? n) xs
-      (recur (cons (mod n base) xs) (quot n base)))))
+          (next-palindrome [n]
+            (let [s (to-base n 10N)
+                  first-half (drop (quot (count s) 2) (reverse s))
+                  nxt (+ 1N (to-number (reverse first-half)))
+                  [h & t :as all] (reverse (to-base nxt 10))
+                  new-first-half (if (< (count first-half) (count all)) t all)
+                  new-n (to-number
+                          (if (odd? (count s))
+                            (concat (reverse first-half) (rest first-half))
+                            (concat (reverse first-half) first-half)))
+                  cnddt-palindrome (to-number
+                                      (if (odd? (count s))
+                                        (concat (reverse t) new-first-half)
+                                        (concat (reverse all) new-first-half)))]
+              (if (> new-n n)
+                new-n
+                cnddt-palindrome)))]
+  (if (palindrom? n)
+    (iterate next-palindrome n)
+    (rest (iterate next-palindrome n)))))
+(take 4 (palindroms 0))
 
-(defn next-palindrome [n]
-	(let [s (to-base n 10)
-				half (drop (quot (count s) 2) s)
-				nxt (+ 1 (to-number (reverse half)))
-				[h & t :as all] (reverse (to-base nxt 10))
-        nhalf (if (< (count half) (count all)) t all)]
-		(to-number
-			(if (odd? (count s))
-				(concat (reverse t) nhalf)
-				(concat (reverse all) nhalf)))))
+(take 1 (palindroms 1234550000))
+
+ (first (palindroms (* 11111111 111111111)))
+(* 11111111 111111111)
+(* 111111111 111111111)
+
+(to-base 12345678987654321 10)
 
 (comment
 
