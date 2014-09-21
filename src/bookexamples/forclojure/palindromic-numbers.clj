@@ -32,32 +32,62 @@
                           (if (odd? (count s))
                             (concat (reverse first-half) (rest first-half))
                             (concat (reverse first-half) first-half)))
-                  cnddt-palindrome (to-number
+                  canddt-palindrome (to-number
                                       (if (odd? (count s))
                                         (concat (reverse t) new-first-half)
                                         (concat (reverse all) new-first-half)))]
               (if (> new-n n)
                 new-n
-                cnddt-palindrome)))]
+                canddt-palindrome)))]
   (if (palindrom? n)
     (iterate next-palindrome n)
     (rest (iterate next-palindrome n)))))
-(take 4 (palindroms 0))
-
-(take 1 (palindroms 1234550000))
-
- (first (palindroms (* 11111111 111111111)))
-(* 11111111 111111111)
-(* 111111111 111111111)
-
-(to-base 12345678987654321 10)
 
 (comment
 
 (load-file "src/bookexamples/forclojure/palindromic-numbers.clj")
 (refer 'bookexamples.forclojure.palindromic-numbers)
+(take 4 (palindroms 0))
+(take 1 (palindroms 1234550000))
 
+(first (palindroms (* 11111111 111111111)))
+
+(to-base 12345678987654321 10)
 
 ;; Some of the solutions on the web
 
+(fn palindromic-num [num]
+  (letfn [(reverse-digit [num result]
+            (if
+              (zero? (quot num 10))
+              (+ (mod num 10) (* result 10))
+              (reverse-digit (quot num 10) (+ (mod num 10) (* result 10)))))
+          (palindromic-in-i-digit [low up]
+            (lazy-cat
+              (lazy-cat
+                (map #(if (< % 10) % (reverse-digit (quot % 10) %)) (range low up))
+                (drop-while
+                  zero?
+                  (map #(reverse-digit % %) (range low up))))
+              (palindromic-in-i-digit up (* up 10))))]
+    (filter #(>= % num) (let [len (count (.toString num))
+                              digit (quot len 2)
+                              low (quot num (apply * (repeat digit 10N)))
+                              up (apply * (repeat (count (.toString low)) 10N))]
+                          (palindromic-in-i-digit low up)))))
 )
+
+(fn iter-palindromic [x]
+    (letfn [(next-palindromic [x]
+                (let [xs (str x)
+                      h1 (.substring xs 0 (quot (inc (count xs)) 2))
+                      h2 (fn [h1] (reverse (.substring h1 0 (- (count xs) (count h1)))))
+                      y (fn [h1] (read-string (apply str h1 (h2 h1))))
+                      y0 (y h1)]
+                    (cond
+                        (< x y0) y0
+                        (re-matches #"9+" xs) (+ 2 x)
+                        true (y (str (inc (read-string h1)))))))]
+        (if (zero? x)
+            (iterate next-palindromic 0)
+            (iterate next-palindromic (next-palindromic (dec x))))))
