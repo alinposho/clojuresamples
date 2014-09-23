@@ -2,7 +2,7 @@
   (:require [clojure.test :refer :all]
             [bookexamples.forclojure.palindromic-numbers :refer :all]))
 
-(deftest a-test
+(deftest palindroms-test
   (testing "The palindroms function"
     (is (= (take 26 (palindroms 0))
       [0 1 2 3 4 5 6 7 8 9
@@ -26,4 +26,4 @@
       [0 1 2 3 4 5 6 7 8 9
        11 22 33 44 55 66 77 88 99
        101 111 121 131 141 151 161]))))
-(run-tests)
+
