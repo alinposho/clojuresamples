@@ -75,7 +75,6 @@
                               low (quot num (apply * (repeat digit 10N)))
                               up (apply * (repeat (count (.toString low)) 10N))]
                           (palindromic-in-i-digit low up)))))
-)
 
 (fn iter-palindromic [x]
     (letfn [(next-palindromic [x]
@@ -91,3 +90,5 @@
         (if (zero? x)
             (iterate next-palindromic 0)
             (iterate next-palindromic (next-palindromic (dec x))))))
+
+)
