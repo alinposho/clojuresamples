@@ -1,10 +1,10 @@
 (ns bookexamples.forclojure.tricky-card-game)
 
-(defn tricky-card-game [t]
+(defn tricky-card-game [trump]
 	(fn [cards]
-		(let [trump (if (nil? t) (:suit (first cards)) t)]
+		(let [lead-game (if trump trump (:suit (first cards)))]
 			(last 
-				(sort-by :rank (filter #(= (:suit %) trump) cards))))))
+				(sort-by :rank (filter #(= (:suit %) lead-game) cards))))))
 
 (comment
 
