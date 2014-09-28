@@ -19,19 +19,6 @@
           (line m))))
   ([f m n s t]
    (take s (map #(take t %) (infinite-matrix f m n)))))
-;;     (cons (f m n)
-;;     (cons (f m n) (lazy-seq (infinite-matrix f (inc m) n)))))
-
-(defn line [m]
-  (cons m (lazy-seq (line (inc m)))))
-(defn matrix [m n]
-  (map (fn [m]
-         (map #(vector m %) (line n)))
-       (line m)))
-
-(take 6 (line 5))
-
-(take 5 (map #(take 6 %) (matrix 0 0)))
 
 
 ;; (take 5 (infinite-matrix str))
@@ -47,7 +34,29 @@
 
 
 ;; Some of the solutions on the web
+  ;; This one is cheating !!
+(fn matrix-with
+    ([f start-h start-w num-h num-w]
+        (letfn
+            [(fseq [f start num]
+                 (if (zero? num) []
+                     (lazy-seq (cons (f start) (fseq f (inc start) (dec num))))))]
+            (fseq (fn [h] (fseq (fn [w] (f h w)) start-w num-w)) start-h num-h)))
+    ([f start-h start-w]
+        (matrix-with f start-h start-w Double/POSITIVE_INFINITY Double/POSITIVE_INFINITY))
+    ([f]
+        (matrix-with f 0 0)))
 
-
+(fn infinite-matrix
+  ([f]
+    (infinite-matrix f 0 0))
+  ([f m n]
+    (letfn [(inner [i j]
+              (lazy-seq (cons (f i j) (inner i (inc j)))))
+            (outer [i]
+              (lazy-seq (cons (inner i n) (outer (inc i)))))]
+      (outer m)))
+  ([f m n s t]
+    (take s (map #(take t %) (infinite-matrix f m n)))))
 
 )
