@@ -16,7 +16,9 @@
    (letfn [(line [m]
             (cons m (lazy-seq (line (inc m)))))]
      (map (fn [m] (map #(f m %) (line n)))
-          (line m)))))
+          (line m))))
+  ([f m n s t]
+   (take s (map #(take t %) (infinite-matrix f m n)))))
 ;;     (cons (f m n)
 ;;     (cons (f m n) (lazy-seq (infinite-matrix f (inc m) n)))))
 
@@ -33,7 +35,9 @@
 
 
 ;; (take 5 (infinite-matrix str))
-(take 5 (map #(take 6 %) (infinite-matrix str 0 0)))
+(=
+ (take 5 (map #(take 6 %) (infinite-matrix str 0 0)))
+ (infinite-matrix str 0 0 5 6))
 
 
 (comment
