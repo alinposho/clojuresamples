@@ -30,5 +30,24 @@
 (not (balanced-brackets? "["))
 
 ;; Some of the solutions on the web
+(fn balanced? [s]
+  (let [p {\( \) \[ \] \{ \}}
+        a (set "()[]{}")]
+    (empty?
+      (reduce (fn [[t & b :as stack] s]
+                (cond (= (p t) s) b
+                      (a s) (conj stack s)
+                      :else stack))
+              () s))))
+
+#(empty?
+    (reduce (fn [[s & t :as u] x] 
+              (cond
+                (= x ({\{ \} \( \) \[ \]} s)) t
+                ((set "{}()[]") x) (cons x u)
+                1 u))
+            ()
+            %))
+
 
 )
