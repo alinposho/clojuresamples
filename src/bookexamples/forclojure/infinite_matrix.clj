@@ -13,12 +13,27 @@
 (defn infinite-matrix
   ([f] (infinite-matrix f 0 0))
   ([f m n]
-   (cons
-    (cons (f m n) (lazy-seq (infinite-matrix f m (inc n))))
-    (lazy-seq (infinite-matrix f (inc m) n)))))
+   (letfn [(line [m]
+            (cons m (lazy-seq (line (inc m)))))]
+     (map (fn [m] (map #(f m %) (line n)))
+          (line m)))))
+;;     (cons (f m n)
+;;     (cons (f m n) (lazy-seq (infinite-matrix f (inc m) n)))))
+
+(defn line [m]
+  (cons m (lazy-seq (line (inc m)))))
+(defn matrix [m n]
+  (map (fn [m]
+         (map #(vector m %) (line n)))
+       (line m)))
+
+(take 6 (line 5))
+
+(take 5 (map #(take 6 %) (matrix 0 0)))
 
 
-(take 5 (map #(take 6 %) (infinite-matrix str 3 4)))
+;; (take 5 (infinite-matrix str))
+(take 5 (map #(take 6 %) (infinite-matrix str 0 0)))
 
 
 (comment

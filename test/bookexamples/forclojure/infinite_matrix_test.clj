@@ -45,3 +45,4 @@
               (check #(= %2 [(+ m %) n]) column)
               (check #(= %2 [(+ m %) (+ n %)]) diagonal)))
        true))))
+(infinite-matrix-test)
