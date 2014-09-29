@@ -16,16 +16,10 @@
               (if (>= i (count board))
                 res
                 (recur (inc i) (conj res ((board i) (- (count board) i 1)))))))]
-    (first (first (filter #(apply = %)
-     (filter not-all-empty?
-             (concat board (columns board) [(diag1 board) (diag2 board)])))))))
-
-(defn columns [board]
-  (partition (count (first board)) (apply interleave board)))
-
-(columns [[1 2 3]
-          [4 5 6]
-          [7 8 9]])
+    (ffirst
+      (filter #(apply = %)
+               (filter not-all-empty?
+                       (concat board (columns board) [(diag1 board) (diag2 board)]))))))
 
 
 (comment
@@ -35,5 +29,23 @@
 
 
 ;; Some of the solutions on the web
+(fn [board]
+  (letfn [(check-horizonal [board]
+            (first (flatten (filter #(every? #{:x :o } %) (filter #(= 1 (count (set %))) board)))))]
+    (let [h (check-horizonal board)]
+      (if
+        h
+        h
+        (let [v (check-horizonal (apply (partial map #(vec [%1 %2 %3])) board))]
+          (if
+            v
+            v
+            (let [fd (check-horizonal [[(first (first board)) (second (second board)) (last (last board))]])]
+              (if
+                fd
+                fd
+                (check-horizonal [[(last (first board)) (second (second board)) (first (last board))]])))))))))
+
+(fn [x] (ffirst (filter #(and (apply = %) (not= (first %) :e)) (partition 3 (map (vec (flatten x)) '(0 1 2 3 4 5 6 7 8 0 3 6 1 4 7 2 5 8 0 4 8 2 4 6))))))
 
 )
