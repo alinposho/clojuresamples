@@ -78,7 +78,7 @@
   (let [
         comb-st (fn [st]  (map #(list % st) (combinations (count st) st)))
         combs (mapcat comb-st sts)]
-    (group-by #(apply + (first %)) combs))))))
+    (group-by #(apply + (first %)) combs)))))
 
 (defn combinations [k st]
   (if (<= k 0) #{#{}}

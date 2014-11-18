@@ -13,7 +13,6 @@
 (= 8  (infix 10 / 2 - 1 * 2))
 (= 72 (infix 20 / 2 + 2 + 4 + 8 - 6 - 10 * 9))
 
-(infix )
 
 ;; Some of the solutions on the web
 (fn infix [init & rawops] (let [
