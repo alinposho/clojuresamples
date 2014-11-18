@@ -11,3 +11,4 @@ pom.xml.asc
 .*
 logs
 *.iml
+/out
