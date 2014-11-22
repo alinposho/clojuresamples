@@ -6,29 +6,16 @@
 ;;   - delete a single item
 ;;   - replace a single item with another item
 ;;  Function memoization should make the simple algorithm work like a dynamic programming algorith(see the memoization example)
-;(def levenshtein
-;  (memoize
-;    (fn [xs ys]
-;      (cond (zero? (count xs)) (count ys)
-;            (zero? (count ys)) (count xs)
-;            :else (min
-;                    (inc (levenshtein (rest xs) ys))
-;                    (inc (levenshtein xs (rest ys)))
-;                    (+ (levenshtein (rest xs) (rest ys))
-;                       (if (= (first xs) (first ys)) 0 1)))))))
-
-(defn levenshtein [xs ys]
-  (let [lev (memoize
-              (fn [xs ys]
-                (cond (zero? (count xs)) (count ys)
-                      (zero? (count ys)) (count xs)
-                      :else (min
-                              (inc (lev (rest xs) ys))
-                              (inc (lev xs (rest ys)))
-                              (+ (lev (rest xs) (rest ys))
-                                 (if (= (first xs) (first ys)) 0 1))))))]
-    (lev xs ys)))
-
+(def levenshtein
+  (memoize
+    (fn [xs ys]
+      (cond (zero? (count xs)) (count ys)
+            (zero? (count ys)) (count xs)
+            :else (min
+                    (inc (levenshtein (rest xs) ys))
+                    (inc (levenshtein xs (rest ys)))
+                    (+ (levenshtein (rest xs) (rest ys))
+                       (if (= (first xs) (first ys)) 0 1)))))))
 
 (comment
 
