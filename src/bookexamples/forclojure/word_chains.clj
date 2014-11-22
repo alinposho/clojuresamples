@@ -34,7 +34,19 @@
   (= false (word-chains? #{"share" "hares" "hare" "are"}))
 
   ;; Some of the solutions on the web
-
+  (letfn [
+          (dis [x1 x2] (cond
+                         (= 0 (count x1)) (count x2)
+                         (= 0 (count x2)) (count x1)
+                         true (apply min (remove nil? [
+                                                       (inc (dis (rest x1) (rest x2)))
+                                                       (inc (dis x1 (rest x2)))
+                                                       (inc (dis (rest x1) x2))
+                                                       (when (= (first x1) (first x2)) (dis (rest x1) (rest x2)))]))))
+          (begin-chain [x] (cond
+                             (= 1 (count x)) [(first x)]
+                             true (for [i x :when (seq (filter #(> 2 (dis i %)) (begin-chain (disj x i))))] i)))
+          (is-chain [x] (boolean (seq (begin-chain x))))] is-chain)
 
 
   )
