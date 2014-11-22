@@ -21,7 +21,7 @@
 (def word-chains?
   (memoize
     (fn
-      ([words] (true? (some (fn [word] (word-chains? (disj words word) [word])) words)))
+      ([words] (true? (word-chains? words [])))
       ([words chain]
        (if (empty? words)
          (every? #(= 1 (apply levenshtein %)) (partition 2 1 chain))
