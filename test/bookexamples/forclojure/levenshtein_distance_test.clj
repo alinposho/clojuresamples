@@ -1,6 +1,6 @@
 (ns bookexamples.forclojure.levenshtein-distance-test
   (:require [clojure.test :refer :all]
-            [bookexamples.forclojure.levenshtein-distance-test :refer :all]))
+            [bookexamples.forclojure.levenshtein-distance :refer :all]))
 
 (deftest levenshtein-distance-test
   (testing "Tests of the Levenshtein distance problem"
