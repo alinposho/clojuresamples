@@ -2,14 +2,16 @@
 
 (defn connected?
   ([graph] (boolean (connected? (set (first graph)) (set (rest graph)))))
-  ([connected-subgraph graph]
-   (letfn [(conn-subgraph [[a b :as edge]]
+  ([connected-vertices graph]
+   (letfn [(connecting-edge? [[a b] con-vertices]
+              (boolean (or (con-vertices a) (con-vertices b))))
+           (connected-subgraph? [edge]
             (and
-              (boolean (or (connected-subgraph a) (connected-subgraph b)))
-              (connected? (into connected-subgraph edge) (disj graph edge))))]
+              (connecting-edge? edge connected-vertices)
+              (connected? (into connected-vertices edge) (disj graph edge))))]
      (or
       (empty? graph)
-      (some conn-subgraph graph)))))
+      (some connected-subgraph? graph)))))
 
 (comment
 
