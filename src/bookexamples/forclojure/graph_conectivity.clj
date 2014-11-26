@@ -1,7 +1,7 @@
 (ns bookexamples.forclojure.graph-conectivity)
 
 (defn connected?
-  ([graph] (boolean (connected? (set (first graph)) (rest graph))))
+  ([graph] (boolean (connected? (set (first graph)) (set (rest graph)))))
   ([connected-subgraph graph]
    (letfn [(conn-subgraph [[a b :as edge]]
             (and
@@ -23,7 +23,18 @@
 (= false (connected? #{[:a :b] [:b :c] [:c :d] [:x :y] [:d :a] [:b :e]}))
 (= true (connected? #{[:a :b] [:b :c] [:c :d] [:x :y] [:d :a] [:b :e] [:x :a]}))
 
+(= false (connected? #{[:a :b] [:b :c] [:c :d] [:x :y] [:d :a] [:b :e] [:x :z]}))
+
 
 
 ;; Some of the solutions on the web
+(fn [x] (letfn [(adjlist [e] (let [
+                                   ee (concat e (map reverse e))
+                                   ve (group-by first ee)]
+                               (into {} (for [[k v] ve] [k (map second v)]))))
+                (connected? [g] (letfn [
+                                        (add-vertex [s v] (if (s v) s
+                                                                    (reduce add-vertex (conj s v) (g v))))]
+                                  (= (count (add-vertex #{} (ffirst g))) (count g))))]
+          (connected? (adjlist x))))
 )
