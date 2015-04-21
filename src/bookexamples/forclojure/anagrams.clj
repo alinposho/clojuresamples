@@ -27,15 +27,18 @@
 (= (anagrams ["veer" "lake" "item" "kale" "mite" "ever"])
    #{#{"veer" "ever"} #{"lake" "kale"} #{"mite" "item"}})
 
+(anagrams ["meat" "mat" "team" "mate" "eat" "tea"])
+
 
 
 ;; Some of the solutions on the web
-;; I don't want to know what this does
 (fn [v]
   (into #{}
-    (map set
-      (filter #(> (count %) 1)
-        (map val (group-by sort v))))))
+    (map set ;; will ensure unique elements
+      (filter #(> (count %) 1) ;; filters one element anagrams
+        (map val (group-by sort v)))))) ;;
+
+(group-by sort ["meat" "mat" "team" "mate" "eat"])
 
 
 )
