@@ -10,7 +10,8 @@
                  [log4j "1.2.16"]
                  [javax.mail/mail "1.4.1"]
                  [org.clojure/core.async "0.1.278.0-76b25b-alpha"]
-                 [org.clojure/core.logic "0.8.8"]]
+                 [org.clojure/core.logic "0.8.8"]
+                 [org.clojure/tools.trace "0.7.8"]]
   ; :main ^:skip-aot bookexamples.programmingclojure.chapter9.real.world.example.pinger-main
   :target-path "target/%s"
   :profiles {:uberjar {:aot :all}}
