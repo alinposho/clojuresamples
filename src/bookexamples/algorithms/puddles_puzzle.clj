@@ -19,13 +19,12 @@
 
 ;; Solution that traverses the collection only once.
 (def vol
-  (letfn [(f [l xs]
+  (letfn [(f [l xs] ;; This function returns a vector of the puddle volume and the max wall comming(folding) from the right
              (if (seq xs)
                (let [x (first xs)
                      [s r] (f (max l x) (rest xs))]
                  [(+ s (max 0 (- (min l r) x))) (max x r)])
                [0 0]))]
-    (trace-vars f)
     (comp first (partial f 0))))
 
 
