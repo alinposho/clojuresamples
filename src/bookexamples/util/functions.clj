@@ -25,7 +25,7 @@
       (+ (first xs) (sum (rest xs)))
       0))
 
-  ((to-traceable sum) (range 1 4))
+  ((to-traceable sum) (range 1 4)) ;; This will not print the neste calls
   )
 
 
