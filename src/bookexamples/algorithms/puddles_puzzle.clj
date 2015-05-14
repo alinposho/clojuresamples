@@ -1,4 +1,5 @@
-(ns bookexamples.algorithms.puddles-puzzle)
+(ns bookexamples.algorithms.puddles-puzzle
+  (:require [bookexamples.util.functions :refer :all]))
 
 ;;; The specification of the problem: https://pavelfatin.com/twitter-puddles-and-foldlr/
 ;; We are given a list of numbers, representing walls of different height. The goal is to determine how much rain water
@@ -14,13 +15,18 @@
             (map (fn [lm xs rm] (- (min lm rm) xs))
                  (reductions max xs)
                  xs
-                 (reverse (reductions max (reverse xs)))))))  ;; we could improve this by defining a one pass reductions right
+                 (reverse (reductions max (reverse xs))))))) ;; we could improve this by defining a one pass reductions right
 
 ;; Solution that traverses the collection only once.
-(defn vol [xs]
-  (if-not (seq? (seq xs))
-    0
-    ))
+(def vol
+  (letfn [(f [l xs]
+             (if (seq xs)
+               (let [x (first xs)
+                     [s r] (f (max l x) (rest xs))]
+                 [(+ s (max 0 (- (min l r) x))) (max x r)])
+               [0 0]))]
+    (trace-vars f)
+    (comp first (partial f 0))))
 
 
 (comment
@@ -31,4 +37,6 @@
   (map (fn [lm xs rm] (- (min lm rm) xs)) lm xs rm)
 
   (volume xs)
+
+  (vol xs)
   )
