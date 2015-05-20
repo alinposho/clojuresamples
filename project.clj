@@ -14,7 +14,9 @@
                  [org.clojure/tools.trace "0.7.8"]
                  [clj-http "0.9.1"]
                  [org.clojure/data.json "0.2.4"]
-                 [com.cemerick/url "0.1.1"]]
+                 [com.cemerick/url "0.1.1"]
+                 [digest "1.4.4"] ;; Distributed under the Eclipse Public License, the same as Clojure.
+                 ]
   ; :main ^:skip-aot bookexamples.programmingclojure.chapter9.real.world.example.pinger-main
   :target-path "target/%s"
   :profiles {:uberjar {:aot :all}}
